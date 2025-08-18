@@ -1,0 +1,170 @@
+{
+  "pages": [
+    {
+      "path": "pages/login/index",
+      "style": {
+        "backgroundColor": "#F6FFF6",
+        "navigationBarTitleText": "登录",
+        "app-plus": { "titleNView": false },
+        "mp-weixin": { "navigationStyle": "custom" },
+        "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+      }
+    },
+    {
+      "path": "pages/home/home",
+       "style": {
+         "navigationBarTitleText": "",
+         "navigationStyle": "custom",
+         "app-plus": { "titleNView": false },
+         "mp-weixin": { "navigationStyle": "custom" },
+         "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+       }
+    },
+    { "path": "pages/vehicle/index", "style": { "navigationBarTitleText": "车辆详情" } },
+    { "path": "pages/auth/index", "style": { "navigationBarTitleText": "认证" } },
+    { "path": "pages/map/index", "style": { "navigationBarTitleText": "找车" } },
+    { "path": "pages/confirm-order/index",  "style": {
+	        "navigationBarTitleText": "",
+	        "navigationStyle": "custom",
+	        "app-plus": { "titleNView": false },
+	        "mp-weixin": { "navigationStyle": "custom" },
+	        "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+	      } },
+    { "path": "pages/drive/index", "style": { "navigationBarTitleText": "" } },
+    { "path": "pages/return/confirm", "style": { "navigationBarTitleText": "" } },
+    { "path": "pages/coupon/index", 	
+	"style": {
+	   "navigationBarTitleText": "",
+	   "navigationStyle": "custom",
+	   "app-plus": { "titleNView": false },
+	   "mp-weixin": { "navigationStyle": "custom" },
+	   "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+	 } },
+    // { "path": "pages/certification/index", "style": { "navigationBarTitleText": "实名认证" } },
+    { "path": "pages/points/index", "style": { "navigationBarTitleText": "积分" } },
+    { "path": "pages/order/ShareOrder", "style": { "navigationBarTitleText": "晒单" } },
+    { "path": "pages/promo/index", "style": { "navigationBarTitleText": "推广" } },
+    { "path": "pages/me/index",       "style": {
+         "navigationBarTitleText": "",
+         "navigationStyle": "custom",
+         "app-plus": { "titleNView": false },
+         "mp-weixin": { "navigationStyle": "custom" },
+         "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+       } },
+	   { "path": "pages/order/index",       "style": {
+	        "navigationBarTitleText": "",
+	        "navigationStyle": "custom",
+	        "app-plus": { "titleNView": false },
+	        "mp-weixin": { "navigationStyle": "custom" },
+	        "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+	      } },
+	   { "path": "pages/order/list",       "style": {
+	        "navigationBarTitleText": "",
+	        "navigationStyle": "custom",
+	        "app-plus": { "titleNView": false },
+	        "mp-weixin": { "navigationStyle": "custom" },
+	        "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+	      } },
+	   
+   {
+  "path": "pages/order/detail",
+  "style": {
+    "navigationStyle": "custom",
+    "app-plus": { "titleNView": false },
+    "mp-weixin": { "navigationStyle": "custom" },
+    "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+  }
+},
+    { "path": "pages/remark/add", "style": { "navigationBarTitleText": "订单详情" } },
+    { "path": "pages/pay/pay", "style": { "navigationBarTitleText": "收银台" } },
+    { "path": "pages/pay/recharge-center", "style": { "navigationBarTitleText": "订单详情" } },
+    { "path": "pages/coupon/share", "style": { "navigationBarTitleText": "" } },
+    { "path": "pages/certification/face-auth/face-auth", "style": { "navigationBarTitleText": "" } },
+    { "path": "pages/certification/face-auth/success", "style": { "navigationBarTitleText": "" } },
+    { "path": "pages/certification/face-auth/fail", "style": { "navigationBarTitleText": "" } },
+	// pages.json 片段
+	{
+	  "path": "pages/auth/idcard",
+	  "style": {
+	     "navigationBarTitleText": "",
+	     "navigationStyle": "custom",
+	     "app-plus": { "titleNView": false },
+	     "mp-weixin": { "navigationStyle": "custom" },
+	     "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+	   }
+	},
+	{
+	  "path": "pages/auth/license",
+	  "style": {
+	     "navigationBarTitleText": "",
+	     "navigationStyle": "custom",
+	     "app-plus": { "titleNView": false },
+	     "mp-weixin": { "navigationStyle": "custom" },
+	     "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+	   }
+	},
+	{
+	  "path": "pages/auth/face",
+	"style": {
+	   "navigationBarTitleText": "",
+	   "navigationStyle": "custom",
+	   "app-plus": { "titleNView": false },
+	   "mp-weixin": { "navigationStyle": "custom" },
+	   "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+	 }
+	},
+	
+	{
+	  "path": "pages/benefit/index",
+	  "style": { "navigationBarTitleText": "卡券套餐", "navigationStyle": "custom", "app-plus": { "titleNView": false } }
+	}
+,
+	
+	{
+	  "path": "pages/coupon_package/index",
+	  "style": { "navigationBarTitleText": "卡券套餐", "navigationStyle": "custom", "app-plus": { "titleNView": false } }
+	},
+	{
+		"path" : "pages/wallet/wallet",
+		"style" : 
+		{
+			  "navigationStyle": "custom",
+			    "app-plus": { "titleNView": false }
+		}
+	},
+	{
+	  "path": "pages/wallet/detail",
+	  "style": {
+	    "navigationStyle": "custom",
+	    "app-plus": { "titleNView": false }
+	  }
+	},
+	{
+	  "path": "pages/wallet/deposit",
+	  "style": {
+	    "navigationStyle": "custom",
+	    "app-plus": { "titleNView": false }
+	  }
+	},
+	{
+		"path" : "pages/find/find",
+		"style" : 
+		{
+			"navigationBarTitleText" : ""
+		}
+	},
+	{
+		"path" : "pages/find/index",
+		"style" : 
+		{
+			"navigationBarTitleText" : ""
+		}
+	}
+
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F7F8FA"
+  }
+}
