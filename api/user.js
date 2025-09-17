@@ -1,6 +1,4 @@
-// src/api/user.js
 import { get, post,upload ,smartUpload} from './request';  // 引入通用的请求方法
-import { getPlatform } from '@/utils/platform'
 
 // 普通登录（用户名、密码）
 export function login(data) {

@@ -86,7 +86,7 @@ const props = defineProps({
 const subComputed = computed(() => props.subTitle || props.subtitle || '')
 
 /** 右侧车图（可传 carImage/suffixIcon），默认使用本地淡灰图 */
-const defaultCar = '/static/benefit/car-fade.png'
+const defaultCar = '/static/icons/che-bg.png'
 const carSrc = computed(() => props.carImage || props.suffixIcon || '')
 
 /** 统一“到期时间”展示为一行：去掉“到期”，清理换行/多空格 */
@@ -217,7 +217,7 @@ const expireDateOnly = computed(() => {
   white-space: nowrap; text-align: left;
 
   /* 胶囊浅灰背景（与蓝湖一致） */
-background-image: url('/static/benefit/rule-bg.png'); /* ← 你的切图路径 */
+background-image: url('/static/icons/che-bg.png'); /* ← 你的切图路径 */
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;  /* 需要再“往下一点”可改成：center 6rpx 等 */

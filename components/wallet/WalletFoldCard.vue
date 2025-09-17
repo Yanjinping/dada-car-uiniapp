@@ -55,13 +55,11 @@
         </view>
     
         <view class="btns">
-          <button class="btn outline">提现</button>
-          <button class="btn dark">充值</button>
+          <button class="btn outline" @tap.stop="emitWithdraw">提现</button>
+          <button class="btn dark"    @tap.stop="emitRecharge">充值</button>
         </view>
       </view>
     </transition>
-
-	
 	
   </view>
 </template>
@@ -84,6 +82,17 @@ const innerExpanded = computed({
 })
 
 function toggle(){ innerExpanded.value = !innerExpanded.value }
+
+function emitWithdraw() {
+  // 可选：本地提示，便于确认触发
+  // uni.showToast({ title: 'withdraw emit', icon: 'none' })
+  emit('withdraw')
+}
+function emitRecharge() {
+  // uni.showToast({ title: 'recharge emit', icon: 'none' })
+  emit('recharge')
+}
+
 </script>
 
 <style scoped>
