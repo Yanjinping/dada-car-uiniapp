@@ -133,7 +133,6 @@ async function handlePhoneLogin() {
     uni.setStorageSync('token', token)
     uni.setStorageSync('userId', u.id)
 	console.log('handlePhoneLogin')
-
     uni.redirectTo({
       url: '/pages/home/index',
       success: () => console.log('跳转成功'),

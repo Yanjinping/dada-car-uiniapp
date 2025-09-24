@@ -1,5 +1,11 @@
 	// /api/benefit.js
 	import { get, post } from '@/api/request' // 你自己的通用封装
+	
+	export function benefitPurchaseCreate({ packageId, overridePrice, idempotentKey, asSubscription = false }) {
+	  return post('/user/packages/purchase/create', {
+	    packageId, overridePrice, idempotentKey, asSubscription
+	  }, true);
+	}
 
 	/** 购买初始化：返回 orderNo、拉起参数；wallet/0元可能直接完成 */
 	export function benefitPurchaseInit({ packageId, price, idempotentKey, asSubscription = false, payMethod }) {

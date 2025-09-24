@@ -93,7 +93,7 @@
     />
   </scroll-view>
 </template>
-
+	
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { getMyCoupons } from '@/api/coupon'

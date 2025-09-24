@@ -151,7 +151,7 @@ export default {
 
     goCoupon(){ uni.navigateTo({ url: '/pkg-benefit/pages/coupon/index' }) },
     gopromo(){ uni.navigateTo({ url: '/pkg-benefit/pages/promo/index' }) },
-	goInviteReward(){ uni.navigateTo({ url: '/pkg-benefit/pages/inviteReward/index' }) },
+	goInviteReward(){ uni.navigateTo({ url: '/pkg-benefit/pages/share_rewards/index' }) },
 	goCommunityBenefits(){ uni.navigateTo({ url: '/pkg-benefit/pages/group/index' }) },
     goMe(){ uni.navigateTo({ url: '/pkg-biz/pages/me/index' }) },
     onNetPointClick(){ uni.navigateTo({ url: '/pkg-biz/pages/find/find' }) },

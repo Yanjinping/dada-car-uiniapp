@@ -108,7 +108,8 @@ export async function payInitUnified({
   const body = {
     userId: Number(userId || 0),
     bizType: bt,
-    bizOrderNum: scene === 'PACKAGE' ? undefined : bizOrderNum,
+    // bizOrderNum: scene === 'PACKAGE' ? undefined : bizOrderNum,
+	bizOrderNum: bizOrderNum ?? null,  
     packageId:   scene === 'PACKAGE' ? unwrapPkgId(packageId ?? bizOrderNum) : undefined,
     totalAmount: num(orderAmount),   // 仅用于展示参考，后端会重算
     payMethod, channel,
@@ -129,7 +130,7 @@ export async function payQueryPrepay(txnId) {
 }
 
 /** （可选）按交易号查询支付单 */
-export async function payQueryByTxn(txnId) {
+export async function queryByTxnId(txnId) {
   const r = await get(API.payQueryByTxn, { txnId }, true)
   const d = r?.data ?? r
   const ok = !!(d?.ok || d?.success || d?.code === 0 || d?.data)

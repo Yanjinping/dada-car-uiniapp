@@ -35,6 +35,18 @@
       :subtitle="poster.subtitle"
       @save="savePoster"
     />
+
+    <!-- 小程序端原生分享按钮（可选） -->
+    <!-- #ifdef MP -->
+    <view style="padding: 24rpx; text-align:center;">
+      <button
+        open-type="share"
+        style="display:inline-block;padding:18rpx 28rpx;border-radius:999px;background:#fff;color:#333;"
+      >
+        转发给好友
+      </button>
+    </view>
+    <!-- #endif -->
   </scroll-view>
 </template>
 
@@ -47,15 +59,25 @@ import InviteList from '@/components/promo/InviteList.vue'
 import RulesPopup from '@/components/promo/RulesPopup.vue'
 import PosterPopup from '@/components/promo/PosterPopup.vue'
 
-// ------- 响应式数据（可接后端）-------
+// 接口（JS 版）：src/api/invite.js
+import {
+  getInviteSummary,
+  getInviteRecords,
+  getInvitePoster,
+  getInviteLink,     // 备用：如果需要单独获取链接
+  bindInvite,        // 备用：在落地页或我的-绑定
+  getMyInviteList    // 备用：单独的“我的邀请列表”页
+} from '../../api/invite'
+
+// ------- 响应式数据 -------
 const summary = ref({
-  amount: 0,               // 可提现金额
-  inviteCount: 0,          // 已成功邀请人数（完成首单）
-  inviteLink: '#小程序://嗒嗒用车/c9zVw8jaaBOQU8f',
-  progressText: '满5人再+10元，满10人再+30元'
+  amount: 0,               // 可提现金额（只包含现金奖励）
+  inviteCount: 0,          // 有效邀请人数（完成首单）
+  inviteLink: '',
+  progressText: ''
 })
 
-const records = ref([])     // 邀请记录
+const records = ref([])     // 邀请记录（头像、昵称、时间、状态、奖励）
 const rulesVisible = ref(false)
 const posterVisible = ref(false)
 const rules = ref([
@@ -67,65 +89,96 @@ const rules = ref([
 ])
 
 const poster = ref({
-  qrcode: '',                                      // 后端返回或本地生成二维码链接
+  qrcode: '',                                      // 后端返回的二维码地址或base64
   title: '我在嗒嗒赚现金',
   subtitle: '快来扫码跟我一起赚~！'
 })
 
 // ------- 生命周期：拉取数据 -------
 onMounted(async () => {
-  await fetchSummary()
-  await fetchRecords()
-  await fetchPoster()
+  await Promise.all([fetchSummary(), fetchRecords(), fetchPoster()])
 })
 
+// ------- API 对接 -------
 async function fetchSummary() {
-  // TODO: 替换为真实接口
-  // const res = await uni.request({ url: BASE + '/invite/reward', method: 'GET' })
-  summary.value = {
-    amount: 10,
-    inviteCount: 2,
-    inviteLink: '#小程序://嗒嗒用车/c9zVw8jaaBOQU8f',
-    progressText: '满5人再+10元，满10人再+30元'
-  }
+  try {
+    const data = await getInviteSummary()
+    summary.value = {
+      amount: data?.amount ?? 0,
+      inviteCount: data?.inviteCount ?? 0,
+      inviteLink: data?.inviteLink ?? '',
+      progressText: data?.progressText ?? ''
+    }
+  } catch (_) {}
 }
 
 async function fetchRecords() {
-  // TODO: 替换为真实接口
-  records.value = [
-    { avatar: '/static/avatar/1.png', name: '哈哈', time: '8.16 23:59', status: '未实名认证', reward: '0元' },
-    { avatar: '/static/avatar/2.png', name: '陈涵…', time: '8.16 13:59', status: '已实名认证', reward: '5元优惠券' },
-    { avatar: '/static/avatar/3.png', name: '兔子', time: '8.16 13:59', status: '已完成首单', reward: '5元' },
-    { avatar: '/static/avatar/4.png', name: 'AAA…', time: '8.16 10:01', status: '已完成首单', reward: '5元' }
-  ]
+  try {
+    records.value = await getInviteRecords()
+  } catch (_) {}
 }
 
 async function fetchPoster() {
-  // TODO: 替换为真实接口
-  // const { data } = await uni.request({ url: BASE + '/invite/poster', method:'GET' })
-  poster.value.qrcode = '/static/qrcode-demo.png'
+  try {
+    poster.value.qrcode = await getInvitePoster()
+  } catch (_) {}
 }
 
 // ------- 事件处理 -------
-function copyLink(link) {
+function copyLink() {
+  const link = summary.value.inviteLink
+  if (!link) return uni.showToast({ title: '暂无邀请链接', icon: 'none' })
   uni.setClipboardData({ data: link, success: () => uni.showToast({ title: '邀请链接已复制' }) })
 }
 
 function shareToFriend() {
-  // 小程序端建议用 open-type="share" 的按钮，这里兜底
-  uni.showShareImageMenu ? uni.showShareImageMenu({ path: poster.value.qrcode }) : uni.showToast({ title: '请使用右上角分享', icon: 'none' })
+  // 小程序端建议用 open-type="share"（上面已提供按钮），这里做兜底
+  const path = poster.value.qrcode
+  if ((uni).showShareImageMenu && path) {
+    ;(uni).showShareImageMenu({ path })
+  } else {
+    uni.showToast({ title: '请使用右上角分享', icon: 'none' })
+  }
 }
 
 function goWithdraw() {
-  uni.showToast({ title: '去提现', icon: 'none' })
-  // uni.navigateTo({ url:'/pages/wallet/withdraw' })
+  // 跳转到你的提现页
+  uni.navigateTo({ url: '/pages/wallet/withdraw' })
 }
 
 async function savePoster() {
-  // PosterPopup 内部已做下载保存，这里可做额外打点
+  // 如果 PosterPopup 内部已处理下载保存，这里可做埋点或二次提示
+  uni.showToast({ title: '已保存到相册', icon: 'none' })
 }
+
+// ------- 小程序分享钩子（可选） -------
+/* 仅小程序有效：把页面分享到会话或朋友圈 */
+// #ifdef MP
+import { onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
+
+onShareAppMessage(() => {
+  return {
+    title: '我在嗒嗒赚现金，邀请你一起～',
+    // 你的落地页路径，可承接 ?code= 或在后端解析 token 生成邀请关系
+    path: '/pages/invite/landing',
+    imageUrl: poster.value.qrcode || ''
+  }
+})
+
+onShareTimeline(() => {
+  return {
+    title: '我在嗒嗒赚现金，邀请你一起～',
+    query: '',       // 若使用 query 传参，这里可拼接 ?code=xxx
+    imageUrl: poster.value.qrcode || ''
+  }
+})
+// #endif
 </script>
 
 <style scoped>
-.page{ min-height:100vh; background:linear-gradient(180deg,#FFE2BF 0%, #FF9E53 100%); padding-bottom: 40rpx;}
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg,#FFE2BF 0%, #FF9E53 100%);
+  padding-bottom: 40rpx;
+}
 </style>

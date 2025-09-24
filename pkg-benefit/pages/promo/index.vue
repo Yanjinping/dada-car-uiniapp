@@ -48,6 +48,7 @@ import RewardCard from '../../components/promo/RewardCard.vue'
 import InviteList from '../../components/promo/InviteList.vue'
 import RulesPopup from '../../components/promo/RulesPopup.vue'
 import PosterPopup from '../../components/promo/PosterPopup.vue'
+import { apiInviteSummary, apiInviteRecords } from '../../api/invite'
 
 /** 控制弹窗显示：统一用 showPoster */
 const showPoster = ref(false)
@@ -77,24 +78,49 @@ onMounted(async () => {
   await fetchRecords()
 })
 
-async function fetchSummary(){ /* TODO 接口 */ }
-async function fetchRecords(){
-  // TODO 接口，这里省略长列表
-  records.value = [
-    { avatar:'/static/avatar/3.png', name:'兔子', time:'8.16 13:59', status:'已完成首单', reward:'5元' },
-    { avatar:'/static/avatar/4.png', name:'AAA…', time:'8.16 10:01', status:'已完成首单', reward:'5元' }
-  ]
+// async function fetchSummary(){ /* TODO 接口 */ }
+// async function fetchRecords(){
+//   // TODO 接口，这里省略长列表
+//   records.value = [
+//     { avatar:'/static/avatar/3.png', name:'兔子', time:'8.16 13:59', status:'已完成首单', reward:'5元' },
+//     { avatar:'/static/avatar/4.png', name:'AAA…', time:'8.16 10:01', status:'已完成首单', reward:'5元' }
+//   ]
+// }
+async function fetchSummary() {
+  try {
+    const res = await apiInviteSummary()
+    if (res?.success) {
+      // 后端返回：{ amount, inviteCount, inviteLink, progressText }
+      summary.value = res.data || summary.value
+    }
+  } catch (e) {
+    uni.showToast({ title: '加载汇总失败', icon: 'none' })
+  }
+}
+
+async function fetchRecords() {
+  try {
+    const res = await apiInviteRecords()
+    if (res?.success) {
+      records.value = res.data || []
+    }
+  } catch (e) {
+    uni.showToast({ title: '加载记录失败', icon: 'none' })
+  }
 }
 
 /** 事件 */
-function copyLink(link){
+function copyLink(link) {
+  if (!link) return uni.showToast({ title: '暂无邀请链接', icon: 'none' })
   uni.setClipboardData({ data: link, success: () => uni.showToast({ title: '邀请链接已复制' }) })
 }
-function shareToFriend(){
-  uni.showToast({ title:'请使用右上角分享', icon:'none' })
+function shareToFriend() {
+  // WeChat 小程序用 open-type="share"；H5/App 给出指引
+  if (!uni.showShareImageMenu) uni.showToast({ title: '请使用右上角分享', icon: 'none' })
 }
-function goWithdraw(){
-  uni.showToast({ title:'去提现', icon:'none' })
+function goWithdraw() {
+  // 根据你钱包页实际路由调整
+  uni.navigateTo({ url: '/pkg-wallet/pages/wallet/wallet' })
 }
 </script>
 

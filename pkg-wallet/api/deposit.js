@@ -22,7 +22,7 @@ export const getDepositInfo = async () => {
 }
 
 /** 创建押金订单（若还没有 bizOrderNum 时） */
-export const createDepositOrder = async (amount = 0) => {
+export const createDepositOrder = async (amount = 10) => {
   try {
     const r = await post(`${BASE}/order/create`, { amount }, true)
     const d = r?.data ?? r?.result ?? r

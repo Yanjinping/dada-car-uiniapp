@@ -49,11 +49,22 @@ const goShare = () => {
   console.log('跳转到晒单页面');
   // 你可以添加跳转到晒单页面的逻辑，例如：
   // router.push('/share')
+  uni.navigateTo({
+     url: '/pkg-benefit/pages/share_rewards/post'
+  }); 
+ 
+  
 }
 
 // 查看晒单记录
 const viewRecords = () => {
   console.log('查看晒单记录');
+  
+  uni.navigateTo({ 
+    url: '/pkg-benefit/pages/share_rewards/record' 
+  });  // uni.navigateTo({
+  // 	{ url: '/pkg-biz/pages/share_rewards/record'
+  // })
   // 你可以添加跳转到晒单记录页面的逻辑，例如：
   // router.push('/share-records')
 }

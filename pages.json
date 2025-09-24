@@ -134,13 +134,13 @@
             "app-plus": { "titleNView": false }
           }
         },
-		{
-		  "path": "pages/deposit/deposit-pay",
-		  "style": {
-		    "navigationStyle": "custom",
-		    "app-plus": { "titleNView": false }
-		  }
-		},
+		// {
+		//   "path": "pages/deposit/deposit-pay",
+		//   "style": {
+		//     "navigationStyle": "custom",
+		//     "app-plus": { "titleNView": false }
+		//   }
+		// },
 		{
 		  "path": "pages/pay/index",
 		  "style": {
@@ -197,7 +197,7 @@
           }
         },
         {
-          "path": "pages/inviteReward/index",
+          "path": "pages/share_rewards/index",
           "style": {
             "navigationBarTitleText": "",
             "navigationStyle": "custom",
@@ -205,7 +205,39 @@
             "mp-weixin": { "navigationStyle": "custom" },
             "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
           }
-        }
+        },
+        {
+          "path": "pages/share_rewards/record",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom",
+            "app-plus": { "titleNView": false },
+            "mp-weixin": { "navigationStyle": "custom" },
+            "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+          }
+        },
+		,
+		{
+		  "path": "pages/share_rewards/post",
+		  "style": {
+		    "navigationBarTitleText": "",
+		    "navigationStyle": "custom",
+		    "app-plus": { "titleNView": false },
+		    "mp-weixin": { "navigationStyle": "custom" },
+		    "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+		  }
+		},
+		,
+		{
+		  "path": "pages/share_rewards/detail",
+		  "style": {
+		    "navigationBarTitleText": "",
+		    "navigationStyle": "custom",
+		    "app-plus": { "titleNView": false },
+		    "mp-weixin": { "navigationStyle": "custom" },
+		    "mp-alipay": { "transparentTitle": "always", "titlePenetrate": "YES" }
+		  }
+		}
       ]
     },
 

@@ -120,7 +120,7 @@
             :key="cashierKey"
             v-model:visible="cashierVisible"
             :scene="'PACKAGE'"
-            :biz-order-num="cashierOrderNum"
+			:biz-order-num="cashierOrderNum"
             :package-id="cashierPackageId"
             :user-id="currentUserId"
             :default-amount="cashierAmount"
@@ -149,7 +149,7 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { onLoad, onShow, onHide, onUnload } from '@dcloudio/uni-app'
 import { getMyCoupons } from '../../api/coupon'
-import { getMyPackages, getBenefitCandidates, giftUserPackage } from '../../api/benefit'
+import { getMyPackages, getBenefitCandidates, giftUserPackage,benefitPurchaseCreate  } from '../../api/benefit'
 import { getAllBalances } from '../../api/wallet'
 import TitleBar from '@/components/header/TitleBar.vue'
 import Segment from '@/components/tabs/Segment.vue'
@@ -239,11 +239,11 @@ const amounts = ref([
 function openCashier ({ amount, orderNum, packageId }) {
   cashierScene.value = 'PACKAGE'
   cashierAmount.value = Number(amount || 0)
-  cashierOrderNum.value = orderNum || ''
+  cashierOrderNum.value = '' // 套餐购买交给后端创建业务单，不传 bizOrderNum
   cashierPackageId.value =
     (packageId != null ? Number(packageId) : null) ??
     (orderNum && /^p\d+$/i.test(String(orderNum)) ? Number(String(orderNum).slice(1)) : null)
-  if (!cashierOrderNum.value) return uni.showToast({ title: '缺少订单号', icon: 'none' })
+  // if (!cashierOrderNum.value) return uni.showToast({ title: '缺少订单号', icon: 'none' })
   if (cashierPackageId.value == null) return uni.showToast({ title: '套餐ID异常', icon: 'none' })
   if (!Number.isFinite(cashierAmount.value)) cashierAmount.value = 0
   cashierKey.value += 1
@@ -372,12 +372,39 @@ function onSharePackage (item) { giftUserPackage(item.id, 'friendUserId') }
 /** 购买按钮：把 packageId 一起传给收银台 */
 function onBuyPackage (item) {
   const pkgId = Number(String(item.id).replace(/^p/i, ''))
-  openCashier({
-    amount: item.price,
-    orderNum: item.id,  // 'p12'
-    packageId: pkgId    // ★ 关键
-  })
+  openCashierForPackagePay({ amount: item.price, packageId: pkgId })
 }
+
+async function openCashierForPackagePay({ amount, packageId }) {
+  try {
+    const idempotentKey = `pkg_${packageId}_${Date.now()}_${Math.random().toString(16).slice(2)}`
+    const res = await benefitPurchaseCreate({
+      packageId,
+      overridePrice: amount,
+      idempotentKey,
+      asSubscription: false
+    })
+    const bizOrderNum = res?.data?.bizOrderNum || res?.bizOrderNum
+    if (!bizOrderNum) {
+      uni.showToast({ title: '建单失败', icon: 'none' })
+      return
+    }
+
+    // 打开收银台 —— 这次带上真实 bizOrderNum，让 Cashier 去 /pay/init
+    cashierScene.value = 'PACKAGE'
+    cashierAmount.value = Number(amount || 0)
+    cashierOrderNum.value = bizOrderNum             // ✅ 关键：真正的业务单号
+    cashierPackageId.value = Number(packageId) || null
+	console.debug(cashierOrderNum.value)
+    cashierKey.value += 1
+    cashierVisible.value = true
+	
+  } catch (e) {
+    console.error('purchase create error', e)
+    uni.showToast({ title: '建单失败', icon: 'none' })
+  }
+}
+
 
 /*----------------- 映射函数------------------- */
 /** 把 BenefitPackage -> PackageCard */
